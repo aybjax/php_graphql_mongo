@@ -17,13 +17,21 @@ services:
     container_name: php
     build:
       context: .
-      dockerfile: "./dockerfiles/php-kolesa.dockerfile"
+      dockerfile: ./dockerfiles/php.dockerfile
     volumes:
       - "./app:/app"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: db
   
   mongo:
     container_name: mongo
     image: mongo:3.6.21-xenial
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: db
     volumes:
       - database:/data/db
 
