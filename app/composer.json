@@ -9,7 +9,9 @@
     ],
     "require": {
         "slim/slim": "4.*",
-        "slim/psr7": "^1.3"
+        "slim/psr7": "^1.3",
+        "gabordemooij/redbean": "dev-master",
+        "rutek/dataclass": "^0.0.2"
     },
     "autoload": {
         "psr-4": {

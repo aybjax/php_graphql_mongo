@@ -1,49 +1,62 @@
 <?php
-// require_once '../project/init.php';
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
-use MongoDB\Driver\Manager;
+use Project\Util\DB;
+require_once '../project/init.php';
 
-require __DIR__ . '/../vendor/autoload.php';
+$db = new DB();
 
-$app = AppFactory::create();
+$id = $db->addArray([
+  "name" => "aybjax",
+  "email" => "ayb@jax"
+]);
 
-$url = sprintf("mongodb://%s:%s@%s:27017",
-                getenv('MONGO_INITDB_ROOT_USERNAME'),
-                getenv('MONGO_INITDB_ROOT_PASSWORD'),
-                'mongo');
+var_dump($id);
+echo "<br/>";
+$data = $db->getDataByID($id);
 
-// $client = new MongoDB\Client($url);
-// $db = $client->db;
-// $testCollection = $db->test;
+var_dump($data);
 
-$collection = (new MongoDB\Client)->db->users;
 
-$app->get('/status', function (Request $request, Response $response, array $args) {
-    $payload = json_encode(['hello' => 'world'], JSON_PRETTY_PRINT);
-    $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-});
+// use Psr\Http\Message\ResponseInterface as Response;
+// use Psr\Http\Message\ServerRequestInterface as Request;
+// use Slim\Factory\AppFactory;
 
-$app->get('/', function (Request $request, Response $response, array $args) use($collection) {
-    $insertOneResult = $collection->insertOne([
-        'username' => 'admin',
-        'email' => 'admin@example.com',
-        'name' => 'Admin User',
-    ]);
+// $app = AppFactory::create();
 
-    printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
+// $url = sprintf("mongodb://%s:%s@%s:27017",
+//                 getenv('MONGO_INITDB_ROOT_USERNAME'),
+//                 getenv('MONGO_INITDB_ROOT_PASSWORD'),
+//                 'mongo');
 
-    var_dump($insertOneResult->getInsertedId());
-    
-    $payload = json_encode(['status' => 'ok'], JSON_PRETTY_PRINT);
-    $response->getBody()->write($payload);
-    return $response;
-                    // ->withHeader('Content-Type', 'application/json')
-                    // ->withStatus(200);
+// // $client = new MongoDB\Client($url);
+// // $db = $client->db;
+// // $testCollection = $db->test;
 
-});
+// $collection = (new MongoDB\Client)->db->users;
 
-$app->run();
+// $app->get('/status', function (Request $request, Response $response, array $args) {
+//     $payload = json_encode(['hello' => 'world'], JSON_PRETTY_PRINT);
+//     $response->getBody()->write($payload);
+//     return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+// });
+
+// $app->get('/', function (Request $request, Response $response, array $args) use($collection) {
+//     $insertOneResult = $collection->insertOne([
+//         'username' => 'admin',
+//         'email' => 'admin@example.com',
+//         'name' => 'Admin User',
+//     ]);
+
+//     printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
+
+//     var_dump($insertOneResult->getInsertedId());
+
+//     $payload = json_encode(['status' => 'ok'], JSON_PRETTY_PRINT);
+//     $response->getBody()->write($payload);
+//     return $response;
+//                     // ->withHeader('Content-Type', 'application/json')
+//                     // ->withStatus(200);
+
+// });
+
+// $app->run();

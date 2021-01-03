@@ -21,19 +21,25 @@ services:
     volumes:
       - "./app:/app"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: user
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: db
+      HOST: db
+      PORT: 3306
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
   
-  mongo:
-    container_name: mongo
-    image: mongo:3.6.21-xenial
+  db:
+    container_name: db
+    image: mariadb
     environment:
-      MONGO_INITDB_ROOT_USERNAME: user
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: db
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
     volumes:
-      - database:/data/db
+      - database:/var/lib/postgresql/data
+    ports:
+      - 3306:3306
 
 volumes:
   database:
