@@ -37,7 +37,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: db
     volumes:
-      - database:/var/lib/postgresql/data
+      - database:/var/lib/mysql
     ports:
       - 3306:3306
 
