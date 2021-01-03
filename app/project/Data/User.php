@@ -2,9 +2,12 @@
 namespace Project\Data;
 
 use Project\Data\DataInterface\DataInterface;
+use Project\Data\Traits\ReusableModelFnx;
 use Project\Util\DBFacade;
 
 class User implements DataInterface {
+    use ReusableModelFnx;
+    
     public $id;
     public $fname;
     public $lname;
@@ -24,30 +27,5 @@ class User implements DataInterface {
     public function getTableName(): string
     {
         return "user";
-    }
-
-    public function tableFields(): array
-    {
-        return (array) $this;
-    }
-
-    public function getId(int $id = null): void
-    {
-        if(!$id)
-        {
-            $id = $this->id;
-        }
-
-        DBFacade::getId($this, $id);
-    }
-
-    public function getQuery(string $query, array $args = null): void
-    {
-        DBFacade::getQuery($this, $query, $args);
-    }
-
-    public function save(): void
-    {
-        $this->id = DBFacade::insert($this);
     }
 }

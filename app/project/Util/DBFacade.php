@@ -68,25 +68,32 @@ class DBFacade {
         }
     }
 
-    static public function getQuery(DataInterface &$dataObject, string $query, ?array $args): void
+    static public function getQuery(DataInterface $dataObject, string $query='', array $args=[]): array
     {
-        if($args)
+        $Cls = get_class($dataObject);
+        $data = R::findAll( $dataObject->getTableName(), $query, $args);
+    
+        $result = [];
+
+        foreach($data as $item)
         {
-            $data = R::findOne( $dataObject->getTableName(), $query, $args);
-        } else
-        {
-            // value of string should be quoted
-            $data = R::findOne( $dataObject->getTableName(), $query);
+            $obj = new $Cls();
+
+            foreach($obj->tableFields() as $key => $val)
+            {
+                $obj->$key = $item[$key];
+            }
+            $result[] = $obj;
         }
 
-        if( !$data )
-        {
-            return;
-        }
+        return $result;
+    }
 
-        foreach($dataObject->tableFields() as $key => $val)
-        {
-            $dataObject->$key = $data[$key];
-        }
+    static public function delete(DataInterface &$dataObject): void
+    {
+        R::hunt(
+            $dataObject->getTableName(),
+            "id = ?",
+            [$dataObject->id]);
     }
 }
